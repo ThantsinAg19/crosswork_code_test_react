@@ -5,9 +5,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Before run locally 
 
 create `.env` file in root dir and set the following env variables
-***REACT_APP_BASE_URL=http://localhost:4500***
-***REACT_APP_AUTH_USERNAME= auth_username from api env value***
-***REACT_APP_AUTH_PASSWORD= auth_password from api env value***
+- ***REACT_APP_BASE_URL=http://localhost:4500***
+- ***REACT_APP_AUTH_USERNAME= auth_username from api env value***
+- ***REACT_APP_AUTH_PASSWORD= auth_password from api env value***
 ## Available Scripts
 
 In the project directory, you can run:
