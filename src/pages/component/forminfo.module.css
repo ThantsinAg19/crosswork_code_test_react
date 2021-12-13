@@ -1,0 +1,27 @@
+.btn_container {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 20px;
+}
+
+.submit_button {
+    background-color: #F3416A;
+    padding-inline: 20px;
+    padding-block: 10px;
+    border-radius: 5px;
+}
+
+.clear_button {
+    background-color: gray;
+    padding-inline: 20px;
+    padding-block: 10px;
+    border: '1px solid #e9e9ef';
+    border-radius: 5px;
+}
+
+.submit_button span, 
+.clear_button span {
+    font-weight: 800;
+    font-size: 18;
+    color: #FFFFFF;
+}
