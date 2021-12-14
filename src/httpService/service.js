@@ -1,5 +1,9 @@
 import axiosInstance from ".";
 
+export async function checkServer(){
+    return axiosInstance.get('/check');
+}
+
 export async function getGenderRatio () {
     return axiosInstance.get('/pie');
 }

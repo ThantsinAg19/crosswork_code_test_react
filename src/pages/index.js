@@ -27,7 +27,7 @@ import GenderRatioPie from './component/pie';
 import RangeByAge from './component/bar';
 import FormInfo from './component/forminfo';
 import TableRecords from './component/table';
-import { fetch_age_group, fetch_gender_ratio, fetch_table_rows } from '../module/action';
+import { check_server, fetch_age_group, fetch_gender_ratio, fetch_table_rows, process_local_data, save_local_table_rows } from '../module/action';
 
 ChartJs.register(
     ArcElement,
@@ -41,31 +41,48 @@ ChartJs.register(
     Legend
 )
 
-const ChartPage = () => {
+const ChartPage = ({
+    server_status = false
+}) => {
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        
-        dispatch(fetch_gender_ratio());
-        dispatch(fetch_age_group());
-        dispatch(fetch_table_rows());
+    useEffect(()=>{
+        dispatch(check_server());
+    },[dispatch])
 
-    }, [dispatch])
+    useEffect(() => {
+        if (server_status) {
+            dispatch(fetch_gender_ratio());
+            dispatch(fetch_age_group());
+            dispatch(fetch_table_rows());
+        }
+        else {
+            dispatch(save_local_table_rows())
+            setTimeout(() => {
+                dispatch(process_local_data());
+            }, 100)
+        }
+    }, [server_status, dispatch])
 
     return (
         <div className='app_container'>
             <div>
-                <FormInfo />
+                <FormInfo server_status={server_status}/>
             </div>
             <div>
                 <GenderRatioPie />
                 <RangeByAge />
             </div>
             <div>
-                <TableRecords/>
+                <TableRecords />
             </div>
         </div>
     )
 }
 
-export default connect(null, null)(ChartPage);
+export default connect(
+    (state) => ({
+        server_status: state.chart.server_active
+    }),
+    null
+)(ChartPage);

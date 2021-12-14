@@ -7,7 +7,7 @@ import * as styles from './forminfo.module.css';
 import TextInput from '../input/textinput';
 import RadioSelection from '../input/radio';
 import { createNewRecord } from '../../httpService/service';
-import { fetch_age_group, fetch_gender_ratio, fetch_table_rows } from '../../module/action';
+import { fetch_age_group, fetch_gender_ratio, fetch_table_rows, insert_local_table, process_local_data } from '../../module/action';
 
 const INPUT_NAME = {
     name: 'name',
@@ -27,18 +27,29 @@ const validationSchema = Yup.object({
     gender: Yup.string().required('Gender is required'),
 })
 
-const Forminfo = () => {
+const Forminfo = ({
+    server_status = false
+}) => {
 
     const dispatch = useDispatch();
 
-    const handleSubmit =async(data,{resetForm})=> {
+    const handleSubmit = async (data, { resetForm }) => {
         try {
-            const response = await createNewRecord(data);
-            if(response.status === 201){
-                alert('Successfully inserted new records');
-                dispatch(fetch_age_group());
-                dispatch(fetch_gender_ratio());
-                dispatch(fetch_table_rows());
+            if (server_status) {
+                const response = await createNewRecord(data);
+                if (response.status === 201) {
+                    alert('Successfully inserted new records');
+                    dispatch(fetch_age_group());
+                    dispatch(fetch_gender_ratio());
+                    dispatch(fetch_table_rows());
+                    resetForm();
+                }
+            }
+            
+            else {
+                alert('Successfully inserted new records locally');
+                dispatch(insert_local_table(data));
+                dispatch(process_local_data(data));
                 resetForm();
             }
         } catch (error) {
